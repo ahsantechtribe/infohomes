@@ -13,6 +13,7 @@ const Table = () => {
       town: "Manchester",
       price: 75000,
       estimatedYield: 92,
+      
     },
     {
       adUrl: "9632584",
