@@ -1,0 +1,434 @@
+[
+  {
+    "id": 1,
+    "subid": 0,
+    "id_subid": "1_0",
+    "subtype_ENG": "Flat",
+    "subtype_SPA": "Piso",
+    "type_ENG": "Flat",
+    "type_SPA": "Piso"
+  },
+  {
+    "id": 1,
+    "subid": 2,
+    "id_subid": "1_2",
+    "subtype_ENG": "Penthouse",
+    "subtype_SPA": "Ático",
+    "type_ENG": "Flat",
+    "type_SPA": "Piso"
+  },
+  {
+    "id": 1,
+    "subid": 4,
+    "id_subid": "1_4",
+    "subtype_ENG": "Duplex",
+    "subtype_SPA": "Dúplex",
+    "type_ENG": "Flat",
+    "type_SPA": "Piso"
+  },
+  {
+    "id": 1,
+    "subid": 6,
+    "id_subid": "1_6",
+    "subtype_ENG": "Penthouse duplex",
+    "subtype_SPA": "Ático Dúplex",
+    "type_ENG": "Flat",
+    "type_SPA": "Piso"
+  },
+  {
+    "id": 2,
+    "subid": 0,
+    "id_subid": "2_0",
+    "subtype_ENG": "unknown",
+    "subtype_SPA": "unknown",
+    "type_ENG": "Chalet",
+    "type_SPA": "Chalet"
+  },
+  {
+    "id": 2,
+    "subid": 1,
+    "id_subid": "2_1",
+    "subtype_ENG": "villa",
+    "subtype_SPA": "villa",
+    "type_ENG": "Chalet",
+    "type_SPA": "Chalet"
+  },
+  {
+    "id": 2,
+    "subid": 2,
+    "id_subid": "2_2",
+    "subtype_ENG": "terraced house",
+    "subtype_SPA": "chalet adosado",
+    "type_ENG": "Chalet",
+    "type_SPA": "Chalet"
+  },
+  {
+    "id": 2,
+    "subid": 3,
+    "id_subid": "2_3",
+    "subtype_ENG": "semidetached house",
+    "subtype_SPA": "chalet pareado",
+    "type_ENG": "Chalet",
+    "type_SPA": "Chalet"
+  },
+  {
+    "id": 2,
+    "subid": 4,
+    "id_subid": "2_4",
+    "subtype_ENG": "independent",
+    "subtype_SPA": "casa independiente",
+    "type_ENG": "Chalet",
+    "type_SPA": "Chalet"
+  },
+  {
+    "id": 2,
+    "subid": 5,
+    "id_subid": "2_5",
+    "subtype_ENG": "andar de moradia",
+    "subtype_SPA": "andar de moradia",
+    "type_ENG": "Chalet",
+    "type_SPA": "Chalet"
+  },
+  {
+    "id": 3,
+    "subid": 0,
+    "id_subid": "3_0",
+    "subtype_ENG": "unknown",
+    "subtype_SPA": "unknown",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 1,
+    "id_subid": "3_1",
+    "subtype_ENG": "country house",
+    "subtype_SPA": "finca rústica",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 2,
+    "id_subid": "3_2",
+    "subtype_ENG": "castle",
+    "subtype_SPA": "castillo",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 3,
+    "id_subid": "3_3",
+    "subtype_ENG": "palace",
+    "subtype_SPA": "palacio",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 4,
+    "id_subid": "3_4",
+    "subtype_ENG": "masia",
+    "subtype_SPA": "masí­a",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 5,
+    "id_subid": "3_5",
+    "subtype_ENG": "cortijo",
+    "subtype_SPA": "cortijo",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 6,
+    "id_subid": "3_6",
+    "subtype_ENG": "casale",
+    "subtype_SPA": "casa rural",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 7,
+    "id_subid": "3_7",
+    "subtype_ENG": "casa de pueblo",
+    "subtype_SPA": "casa de pueblo",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 8,
+    "id_subid": "3_8",
+    "subtype_ENG": "casa terrera",
+    "subtype_SPA": "casa terrera",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 9,
+    "id_subid": "3_9",
+    "subtype_ENG": "casa mata",
+    "subtype_SPA": "casa mata",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 10,
+    "id_subid": "3_10",
+    "subtype_ENG": "torre",
+    "subtype_SPA": "torre",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 11,
+    "id_subid": "3_11",
+    "subtype_ENG": "caseron",
+    "subtype_SPA": "caseron",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 12,
+    "id_subid": "3_12",
+    "subtype_ENG": "pazo",
+    "subtype_SPA": "pazo",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 13,
+    "id_subid": "3_13",
+    "subtype_ENG": "villa",
+    "subtype_SPA": "villa",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 14,
+    "id_subid": "3_14",
+    "subtype_ENG": "palacete",
+    "subtype_SPA": "palacete",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 15,
+    "id_subid": "3_15",
+    "subtype_ENG": "masseria",
+    "subtype_SPA": "masseria",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 16,
+    "id_subid": "3_16",
+    "subtype_ENG": "fattoria",
+    "subtype_SPA": "fattoria",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 17,
+    "id_subid": "3_17",
+    "subtype_ENG": "trullo",
+    "subtype_SPA": "trullo",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 18,
+    "id_subid": "3_18",
+    "subtype_ENG": "casalicascine",
+    "subtype_SPA": "casalicascine",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 19,
+    "id_subid": "3_19",
+    "subtype_ENG": "baita/chalet",
+    "subtype_SPA": "baita/chalet",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 20,
+    "id_subid": "3_20",
+    "subtype_ENG": "quinta",
+    "subtype_SPA": "quinta",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 21,
+    "id_subid": "3_21",
+    "subtype_ENG": "moinho",
+    "subtype_SPA": "moinho",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 22,
+    "id_subid": "3_22",
+    "subtype_ENG": "monte alentejano",
+    "subtype_SPA": "monte alentejano",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 3,
+    "subid": 23,
+    "id_subid": "3_23",
+    "subtype_ENG": "solar",
+    "subtype_SPA": "solar",
+    "type_ENG": "Rural home",
+    "type_SPA": "Casa rústica"
+  },
+  {
+    "id": 4,
+    "subid": 0,
+    "id_subid": "4_0",
+    "subtype_ENG": "unknown",
+    "subtype_SPA": "unknown",
+    "type_ENG": "Parking",
+    "type_SPA": "Garaje"
+  },
+  {
+    "id": 4,
+    "subid": 1,
+    "id_subid": "4_1",
+    "subtype_ENG": "depot",
+    "subtype_SPA": "cochera",
+    "type_ENG": "Parking",
+    "type_SPA": "Garaje"
+  },
+  {
+    "id": 4,
+    "subid": 2,
+    "id_subid": "4_2",
+    "subtype_ENG": "parking space",
+    "subtype_SPA": "plaza parking",
+    "type_ENG": "Parking",
+    "type_SPA": "Garaje"
+  },
+  {
+    "id": 5,
+    "subid": 0,
+    "id_subid": "5_0",
+    "subtype_ENG": "Office",
+    "subtype_SPA": "Oficina",
+    "type_ENG": "Office",
+    "type_SPA": "Oficina"
+  },
+  {
+    "id": 6,
+    "subid": 0,
+    "id_subid": "6_0",
+    "subtype_ENG": "unknown",
+    "subtype_SPA": "unknown",
+    "type_ENG": "Commercial",
+    "type_SPA": "Local/nave"
+  },
+  {
+    "id": 6,
+    "subid": 1,
+    "id_subid": "6_1",
+    "subtype_ENG": "commercial property",
+    "subtype_SPA": "local comercial",
+    "type_ENG": "Commercial",
+    "type_SPA": "Local/nave"
+  },
+  {
+    "id": 6,
+    "subid": 2,
+    "id_subid": "6_2",
+    "subtype_ENG": "industrial premises",
+    "subtype_SPA": "nave industrial",
+    "type_ENG": "Commercial",
+    "type_SPA": "Local/nave"
+  },
+  {
+    "id": 8,
+    "subid": 0,
+    "id_subid": "8_0",
+    "subtype_ENG": "unknown",
+    "subtype_SPA": "unknown",
+    "type_ENG": "Land",
+    "type_SPA": "Terreno"
+  },
+  {
+    "id": 8,
+    "subid": 1,
+    "id_subid": "8_1",
+    "subtype_ENG": "urban",
+    "subtype_SPA": "urbano (solar)",
+    "type_ENG": "Land",
+    "type_SPA": "Terreno"
+  },
+  {
+    "id": 8,
+    "subid": 2,
+    "id_subid": "8_2",
+    "subtype_ENG": "country land available for build in",
+    "subtype_SPA": "urbanizable",
+    "type_ENG": "Land",
+    "type_SPA": "Terreno"
+  },
+  {
+    "id": 8,
+    "subid": 3,
+    "id_subid": "8_3",
+    "subtype_ENG": "country land",
+    "subtype_SPA": "no urbanizable",
+    "type_ENG": "Land",
+    "type_SPA": "Terreno"
+  },
+  {
+    "id": 10,
+    "subid": 0,
+    "id_subid": "10_0",
+    "subtype_ENG": "newdevelopment",
+    "subtype_SPA": "obra nueva",
+    "type_ENG": "newdevelopment",
+    "type_SPA": "obra nueva"
+  },
+  {
+    "id": 12,
+    "subid": 0,
+    "id_subid": "12_0",
+    "subtype_ENG": "storageroom",
+    "subtype_SPA": "trastero",
+    "type_ENG": "storageroom",
+    "type_SPA": "trastero"
+  },
+  {
+    "id": 13,
+    "subid": 0,
+    "id_subid": "13_0",
+    "subtype_ENG": "building",
+    "subtype_SPA": "edificio",
+    "type_ENG": "building",
+    "type_SPA": "edificio"
+  }
+]

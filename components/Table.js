@@ -13,7 +13,6 @@ const Table = () => {
       town: "Manchester",
       price: 75000,
       estimatedYield: 92,
-      
     },
     {
       adUrl: "9632584",
@@ -43,12 +42,14 @@ const Table = () => {
             <td>{item.town}</td>
             <td>{item.price}</td>
             <td>
-              <div className="hidden w-full" />
+              {/* <div className="hidden w-full" /> */}
               <div className="bg-[#C3B5EE] w-full h-[50px]">
                 <div
-                  className={`bg-[#A160F1] h-[50px]`}
+                  className="bg-[#A160F1] h-[50px] flex items-center p-5"
                   style={{ width: item.estimatedYield + `%` }}
-                ></div>
+                >
+                  <h3>{item.estimatedYield}</h3>
+                </div>
               </div>
             </td>
           </tr>

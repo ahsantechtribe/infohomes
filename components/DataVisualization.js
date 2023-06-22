@@ -1,12 +1,17 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import Table from "./Table";
+import Filter from "./Filter";
 
 const DataVisualization = () => {
+  const [descriptionExpand, setDescriptionExpand] = useState(true);
+  const [filterExpand, setFilterExpand] = useState(true);
+
   return (
-    <div className="max-w-[1440px] mx-auto">
+    <div className="max-w-[1440px] mx-auto border-b-[1px] border-[#616161]">
       <div className="grid grid-cols-12 gap-20">
-        <main className="col-span-9 border-2 border-black">
+        <main className="col-span-9">
           <div>
             <h1 className="text-black text-[60px] leading-[65px] mt-10 w-[892px]">
               Current demand vs. Yield ordered by city and type
@@ -51,7 +56,7 @@ const DataVisualization = () => {
         </main>
 
         {/* Right Section */}
-        <aside className="col-span-3 flex flex-col border-2 gap-y-2 border-black">
+        <aside className="col-span-3 flex flex-col gap-y-2">
           <div className="flex justify-between mt-3">
             <h6 className="text-[#616161] text-[12px]">Published 23.03.23</h6>
             <div>
@@ -61,31 +66,72 @@ const DataVisualization = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-between border-b-[1px] border-[#616161] pb-5">
+          <div className="flex justify-between border-b-[1px] border-[#616161] pb-2">
             <h3 className="text-[#EA3EFF] text-[25px] leading-[33px]">
               Share Analytics
             </h3>
             <Image src="/share.svg" alt="share button" width={21} height={21} />
           </div>
-          <div className="flex justify-between border-b-[1px] border-[#616161] pb-5">
-            <h3 className="text-[#0E0B13] text-[25px] leading-[33px]">
-              Filter
-            </h3>
-            <Image
-              src="/arrowdown.svg"
-              alt="share button"
-              width={6}
-              height={9}
-            />
+          <div className="border-b-[1px] border-[#616161]">
+            <div
+              className="cursor-pointer flex justify-between  py-[25px]"
+              onClick={() => {
+                setFilterExpand((prev) => !prev);
+              }}
+            >
+              <h3 className="text-[#0E0B13] text-[25px] leading-[33px]">
+                Filter
+              </h3>
+              {filterExpand ? (
+                <Image
+                  src="/arrowup.svg"
+                  alt="share button"
+                  width={12}
+                  height={24}
+                />
+              ) : (
+                <Image
+                  src="/arrowdown.svg"
+                  alt="share button"
+                  width={12}
+                  height={24}
+                />
+              )}
+            </div>
+            <div hidden={filterExpand}>
+              <Filter />
+            </div>
           </div>
-          <div className="flex justify-between my-3 pb-5">
-            <h3 className="text-[#0E0B13] text-[25px] leading-[33px]">
-              How to read this graph
-            </h3>
-            <Image src="/arrowup.svg" alt="share button" width={6} height={9} />
-          </div>
-          <div className="mt-3 border-b-[1px] border-[#616161] pb-5">
-            <p className="text-[15px] leading-[23px]">
+          <div className="border-b-[1px] border-[#616161] py-[25px]">
+            <div
+              className="flex justify-between cursor-pointer"
+              onClick={() => {
+                setDescriptionExpand((prev) => !prev);
+              }}
+            >
+              <h3 className="text-[#0E0B13] text-[25px] leading-[33px]">
+                How to read this graph
+              </h3>
+              {descriptionExpand ? (
+                <Image
+                  src="/arrowup.svg"
+                  alt="share button"
+                  width={12}
+                  height={24}
+                />
+              ) : (
+                <Image
+                  src="/arrowdown.svg"
+                  alt="share button"
+                  width={12}
+                  height={24}
+                />
+              )}
+            </div>
+            <p
+              className="text-[15px] leading-[23px] mt-10"
+              hidden={descriptionExpand}
+            >
               Short description of what the graph is showing the user. With this
               we explain the content and make it more clear for the user. We
               bring clarity and transparency to the data. We show clear
