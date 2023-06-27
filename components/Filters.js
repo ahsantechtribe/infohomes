@@ -15,8 +15,8 @@ const Filters = ({ data, setData }) => {
   const [property, setProperty] = useState({});
   const [filter, setFilter] = useState();
   const [interest, setInterest] = useState();
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(2000000);
+  const [minPrice, setMinPrice] = useState();
+  const [maxPrice, setMaxPrice] = useState();
 
 
   // Data States
@@ -26,7 +26,7 @@ const Filters = ({ data, setData }) => {
   const [propertyArray, setPropertyArray] = useState(property_data);
 
   // Selection
-  const [selection, setSelection] = useState([{ community: 'Aragón' }]);
+  const [selection, setSelection] = useState([{ community: "Aragón" }]);
 
   const debounce = (callback, delay) => {
     let timeoutId;
@@ -38,36 +38,41 @@ const Filters = ({ data, setData }) => {
     };
   };
 
+
+  const fetchData = async (reqParams) => {
+    try {
+      const response = await API.get("", {
+        headers: { Authorization: `Bearer ${process.env.token}` },
+        params: reqParams
+      });
+
+      console.log("P " + minPrice)
+      console.log("M " + maxPrice)
+      const newData = [...data, ...response.data.data];
+      const mergedData = Array.from(new Set(newData.map(JSON.stringify)));
+      const uniqueData = mergedData.map(JSON.parse);
+      console.log(newData.length + " - length of returned data array")
+      console.log(uniqueData.length + " - length of merged array with duplicates removed")
+      setData(uniqueData);
+    } catch (err) {
+      // Handle error
+    } finally {
+      // Cleanup and loading state
+    }
+  };
+
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await API.get("", {
-          headers: { Authorization: `Bearer ${process.env.token}` },
-          params: {
-            pmin: minPrice,
-            pmax: maxPrice
-          },
-        });
 
-        const newData = [...data, ...response.data.data];
-        const mergedData = Array.from(new Set(newData.map(JSON.stringify)));
-        const uniqueData = mergedData.map(JSON.parse);
-        console.log(newData.length + " len m");
-        console.log(uniqueData.length + " len u");
-        setData(uniqueData);
-      } catch (err) {
-        // Handle error
-      } finally {
-        // Cleanup and loading state
-      }
+    const reqParams = {
+      pmin: minPrice,
+      pmax: maxPrice,
     };
+    const debouncedFetchData = debounce(fetchData, 300);
 
-    const debouncedFetchData = debounce(fetchData, 300); // Adjust the debounce delay as needed (e.g., 300 milliseconds)
-
-    debouncedFetchData();
+    debouncedFetchData(reqParams);
 
     return () => {
-      // Cleanup the debounce function
       clearTimeout(debouncedFetchData);
     };
   }, [minPrice, maxPrice]);
@@ -79,11 +84,9 @@ const Filters = ({ data, setData }) => {
 
     const reqParams = {};
 
-    if (currentSelection.neighbourhood) {
-      reqParams.barrio = currentSelection.neighbourhood;
-    }
+    currentSelection.neighbourhood ? reqParams.barrio = currentSelection.neighbourhood : reqParams.barrio = 'N/A'
+
     if (currentSelection.community) {
-      console.log(currentSelection + "hhhh")
       reqParams.comunidad = currentSelection.community;
     }
     if (currentSelection.city) {
@@ -92,37 +95,12 @@ const Filters = ({ data, setData }) => {
     if (currentSelection.subtype_ENG) {
       reqParams.typerr = currentSelection.id_subid;
     }
+    reqParams.sortBy = "estimated_discount";
 
-
-
-    console.log("Current Request Object A");
+    console.log("Current Request Object");
     console.log(reqParams);
 
-    const fetchData = async () => {
-
-      try {
-        const response = await API.get('', {
-          headers: { "Authorization": `Bearer ${process.env.token}` },
-          params: reqParams
-        });
-
-        const newData = [...data, ...response.data.data];
-        const mergedData = Array.from(new Set(newData.map(JSON.stringify)));
-        const uniqueData = mergedData.map(JSON.parse);
-        console.log(newData.length + " len m")
-        console.log(uniqueData.length + " len u")
-        setData(uniqueData)
-        console.log(uniqueData)
-
-      } catch (err) {
-        // setError(err);
-        // console.log(err);
-      } finally {
-        // setIsLoading(false);
-      }
-    };
-
-    fetchData();
+    fetchData(reqParams);
   }, [selection]);
 
 
@@ -162,7 +140,6 @@ const Filters = ({ data, setData }) => {
       setNeighbourhood('');
       setCityArray(city_data);
     } else if (name === "city") {
-      console.log("helo")
       setCity('');
       setNeighbourhood('');
       setNeighbourhoodArray(neighbourhood_data);
@@ -218,8 +195,8 @@ const Filters = ({ data, setData }) => {
   }
   // Filter Search Functions End
 
-  const debouncedSetMinPrice = debounce(setMinPrice, 300);
-  const debouncedSetMaxPrice = debounce(setMaxPrice, 300);
+  const debouncedSetMinPrice = debounce(setMinPrice, 1000);
+  const debouncedSetMaxPrice = debounce(setMaxPrice, 1000);
 
   return (
     <>
@@ -227,7 +204,6 @@ const Filters = ({ data, setData }) => {
         {
           selection.map((item, index) => {
             return <h5 title={`${item.community} ${item.city} ${item.neighbourhood} ${item.property && `(${item.property.subtype_ENG})`}`} key={index} className='text-[12px] text-black truncate cursor-pointer'>{item.community} {item.city} {item.neighbourhood} {item.property && `(${item.property.subtype_ENG})`}</h5>
-            // return <h5 title={`${item.comunidad} ${item.ciudad} ${item.neighbourhood} ${item.property && `(${item.property.subtype_ENG})`}`} key={index} className='text-[12px] text-black truncate cursor-pointer'>{item.community} {item.city} {item.neighbourhood} {item.property && `(${item.property.subtype_ENG})`}</h5>
           }
           )
         }
@@ -268,16 +244,13 @@ const Filters = ({ data, setData }) => {
             <MultiRangeSlider
               min={0}
               max={2000000}
-              onChange={({ min, max }) => {
-                // setMinPrice(min);
-                // setMaxPrice(max);
+              onChangeMin={({ min }) => {
                 debouncedSetMinPrice(min)
+              }}
+              onChangeMax={({ max }) => {
                 debouncedSetMaxPrice(max)
               }}
             />
-            {(minPrice)}
-            <br />
-            {(maxPrice)}
           </div>
         </div>
 

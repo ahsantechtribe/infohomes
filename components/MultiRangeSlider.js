@@ -2,13 +2,12 @@ import React, { useCallback, useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import "./multiRangeSlider.css";
 
-const MultiRangeSlider = ({ min, max, onChange }) => {
+const MultiRangeSlider = ({ min, max, onChangeMin, onChangeMax }) => {
     const [minVal, setMinVal] = useState(min);
     const [maxVal, setMaxVal] = useState(max);
     const minValRef = useRef(min);
     const maxValRef = useRef(max);
     const range = useRef(null);
-
 
     const getPercent = useCallback(
         (value) => Math.round(((value - min) / (max - min)) * 100),
@@ -35,31 +34,44 @@ const MultiRangeSlider = ({ min, max, onChange }) => {
     }, [maxVal, getPercent]);
 
     useEffect(() => {
-        onChange({ min: minVal, max: maxVal });
-    }, [minVal, maxVal, onChange]);
+        onChangeMin({ min: minVal });
+        onChangeMax({ max: maxVal });
+    }, [minVal, maxVal, onChangeMin, onChangeMax]);
+
+    const handleMinInputChange = (e) => {
+        const value = Number(e.target.value);
+        setMinVal(value);
+        minValRef.current = value;
+    };
+
+    const handleMaxInputChange = (e) => {
+        const value = Number(e.target.value);
+        setMaxVal(value);
+        maxValRef.current = value;
+    };
 
     return (
         <div>
             <div className="flex justify-between mb-10">
-                <div className='w-[45%]'>
+                <div className="w-[45%]">
                     <input
                         className="w-full text-[12px] text-[#616161] p-2 shadow-md"
                         type="text"
                         id="start-time"
                         placeholder="From"
                         value={minVal}
-                        onChange={(e) => { console.log(e.target.value) }}
+                        onChange={handleMinInputChange}
                     />
                 </div>
 
-                <div className='w-[45%]'>
+                <div className="w-[45%]">
                     <input
-                        className='w-full text-[12px] text-[#616161] p-2 shadow-md'
+                        className="w-full text-[12px] text-[#616161] p-2 shadow-md"
                         type="text"
                         id="end-time"
                         placeholder="To"
                         value={maxVal}
-                        onChange={(e) => { console.log(e.target.value) }}
+                        onChange={handleMaxInputChange}
                     />
                 </div>
             </div>
@@ -103,7 +115,8 @@ const MultiRangeSlider = ({ min, max, onChange }) => {
 MultiRangeSlider.propTypes = {
     min: PropTypes.number.isRequired,
     max: PropTypes.number.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChangeMin: PropTypes.func.isRequired,
+    onChangeMax: PropTypes.func.isRequired,
 };
 
 export default MultiRangeSlider;
