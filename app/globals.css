@@ -17,11 +17,9 @@ input[type=radio] {
   padding: 0.3em;
   -webkit-appearance: none;
   outline: 0.1em solid #616161;
-  /* outline-offset: 0.1em; */
 }
 
 input[type=radio]:checked {
-  /* display: inline-block; */
   background-color: #000;
   outline: 0.1em solid #000;
 

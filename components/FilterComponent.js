@@ -41,7 +41,6 @@ const FilterComponent = ({
         search();
     }, [searchValue, handleSearch, filteredArray]);
 
-    console.log()
 
     return (
         <div className="mb-4">
@@ -86,8 +85,6 @@ const FilterComponent = ({
                                     rowCount={searchResults.length}
                                     rowRenderer={({ key, index, style }) => {
                                         const item = searchResults[index];
-                                        // console.log("val + " + value)
-                                        // console.log(name + " " + item)
                                         return (
                                             <div key={key} style={style} className="ml-2">
                                                 <label htmlFor={item[name]} className="truncate">
@@ -99,7 +96,6 @@ const FilterComponent = ({
                                                         checked={value === item[name]}
                                                         onChange={(e) => {
                                                             onOptionChange(e);
-                                                            console.log("MY VALUE Is : " + value)
                                                         }
                                                         }
                                                     />
