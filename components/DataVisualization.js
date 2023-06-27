@@ -2,11 +2,28 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import Table from "./Table";
-import Filter from "./Filter";
+import Filters from "./Filters";
+import { ArrowPrevious, ArrowNext } from "./SVGWrapper";
 
 const DataVisualization = () => {
   const [descriptionExpand, setDescriptionExpand] = useState(true);
   const [filterExpand, setFilterExpand] = useState(true);
+  const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < Math.ceil(data.length / itemsPerPage)) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
 
   return (
     <div className="max-w-[1440px] mx-auto border-b-[1px] border-[#616161]">
@@ -22,6 +39,8 @@ const DataVisualization = () => {
               <input
                 type="text"
                 placeholder="Search"
+                name="search"
+                id="search"
                 className="rounded-full border-[1px] border-[#616161] text-[12px] leading-[18px] pl-8 p-2 w-[420px]"
               />
               <Image
@@ -33,25 +52,17 @@ const DataVisualization = () => {
               />
             </div>
             <div className="flex items-center">
-              <p className="text-[12px] leading-[18px] mr-3">Page 1 Of 25</p>
-              <Image
-                src="/arrowleft.svg"
-                alt="search icon"
-                width={6}
-                height={10}
-                className="mx-1"
-              />
-              <Image
-                src="/arrowright.svg"
-                alt="search icon"
-                className="mx-1"
-                width={6}
-                height={10}
-              />
+              <p className="text-[12px] leading-[18px] mr-3">Page {currentPage} Of {Math.ceil(data.length / 8)}</p>
+              <button onClick={goToPreviousPage} className="mr-3">
+                <ArrowPrevious className={currentPage === 1 ? 'stroke-[#D3D3D3]' : 'stroke-[#0E0B13]'} />
+              </button>
+              <button onClick={goToNextPage}>
+                <ArrowNext className={currentPage === Math.ceil(data.length / 8) ? 'stroke-[#D3D3D3]' : 'stroke-[#0E0B13]'} />
+              </button>
             </div>
           </div>
           <div className=" mt-5">
-            <Table />
+            <Table data={data} setData={setData} currentPage={currentPage} itemsPerPage={itemsPerPage} />
           </div>
         </main>
 
@@ -72,9 +83,11 @@ const DataVisualization = () => {
             </h3>
             <Image src="/share.svg" alt="share button" width={21} height={21} />
           </div>
-          <div className="border-b-[1px] border-[#616161]">
+
+          {/* Filter */}
+          <div className="border-b-[1px] border-[#616161] py-[25px]">
             <div
-              className="cursor-pointer flex justify-between  py-[25px]"
+              className="cursor-pointer flex justify-between"
               onClick={() => {
                 setFilterExpand((prev) => !prev);
               }}
@@ -84,14 +97,14 @@ const DataVisualization = () => {
               </h3>
               {filterExpand ? (
                 <Image
-                  src="/arrowup.svg"
+                  src="/arrowdown.svg"
                   alt="share button"
                   width={12}
                   height={24}
                 />
               ) : (
                 <Image
-                  src="/arrowdown.svg"
+                  src="/arrowup.svg"
                   alt="share button"
                   width={12}
                   height={24}
@@ -99,9 +112,10 @@ const DataVisualization = () => {
               )}
             </div>
             <div hidden={filterExpand}>
-              <Filter />
+              <Filters data={data} setData={setData} />
             </div>
           </div>
+
           <div className="border-b-[1px] border-[#616161] py-[25px]">
             <div
               className="flex justify-between cursor-pointer"
@@ -114,14 +128,14 @@ const DataVisualization = () => {
               </h3>
               {descriptionExpand ? (
                 <Image
-                  src="/arrowup.svg"
+                  src="/arrowdown.svg"
                   alt="share button"
                   width={12}
                   height={24}
                 />
               ) : (
                 <Image
-                  src="/arrowdown.svg"
+                  src="/arrowup.svg"
                   alt="share button"
                   width={12}
                   height={24}

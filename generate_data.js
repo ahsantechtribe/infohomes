@@ -36052,7 +36052,6 @@ const data = [
   },
 ];
 
-console.log(data);
 // Manipulate the data
 const new_data = data.map((item) => {
   if (item.badge === "Comunidad") {
