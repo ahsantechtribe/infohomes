@@ -1,62 +1,51 @@
-
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { List, AutoSizer } from "react-virtualized";
 import { RxCross2 } from "react-icons/rx";
 import Image from "next/image";
-import "../app/scrollbar.css";
+import "../styles/scrollbar.css";
 
 const FilterComponent = ({
     name,
     title,
     value,
-    handleSearch,
     filteredArray,
     onOptionChange,
     onOptionClear
 }) => {
-    const [searchValue, setSearchValue] = useState("");
-    const [searchResults, setSearchResults] = useState(filteredArray);
+    const [searchQuery, setSearchQuery] = useState("");
     const [searchExpandFlag, setSearchExpandFlag] = useState(false);
+
+
+    const filteredItems = useMemo(() => {
+        return filteredArray.filter(item => {
+            return item[name].toLowerCase().includes(searchQuery.toLowerCase().trim());
+        })
+    }, [filteredArray, searchQuery]);
 
     const handleInputChange = (e) => {
         const inputValue = e.target.value;
-        setSearchValue(inputValue);
+        setSearchQuery(inputValue);
     };
 
     const clearSearch = () => {
-        setSearchValue("");
+        setSearchQuery("");
     };
-
-    useEffect(() => {
-        const search = async () => {
-            if (searchValue) {
-                const results = await handleSearch(searchValue);
-                setSearchResults(results);
-            } else {
-                setSearchResults(filteredArray);
-            }
-        };
-
-        search();
-    }, [searchValue, handleSearch, filteredArray]);
-
 
     return (
         <div className="mb-4">
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center h-5">
                 <h4 className="text-[14px] leading-[16px]">{title ? title.toUpperCase() : name.toUpperCase()}</h4>
                 <div
                     className={`flex justify-between ${searchExpandFlag && "border-b-[0.5px]"
-                        } border-[#616161] pb-1`}
+                        } border-[#616161]  pb-1`}
                 >
                     <input
                         type="text"
                         id="search"
                         placeholder="Search"
-                        className="text-[12px] text-[#616161] outline-none w-[150px] py-1 px-2 shadow-sm mr-1 rounded-full"
+                        className="text-[12px] text-[#616161] bg-transparent outline-none w-[150px] py-1 px-2 mr-1 rounded-sm"
                         hidden={!searchExpandFlag}
-                        value={searchValue}
+                        value={searchQuery}
                         onChange={handleInputChange}
                     />
                     <button onClick={() => {
@@ -72,19 +61,19 @@ const FilterComponent = ({
                     </button>
                 </div>
             </div>
-            <div className={`mt-4 w-full ${searchResults.length > 0 ? 'h-[150px]' : 'h-[30px]'} `} hidden={value}>
+            <div className={`mt-4 w-full ${filteredItems.length > 0 ? 'h-[150px]' : 'h-[30px]'} `} hidden={value}>
                 <AutoSizer>
                     {({ width, height }) => (
                         filteredArray.length > 0 ?
-                            searchResults &&
+                            filteredItems &&
                             <form>
                                 <List
                                     width={width}
                                     height={height}
                                     rowHeight={30}
-                                    rowCount={searchResults.length}
+                                    rowCount={filteredItems.length}
                                     rowRenderer={({ key, index, style }) => {
-                                        const item = searchResults[index];
+                                        const item = filteredItems[index];
                                         return (
                                             <div key={key} style={style} className="ml-2">
                                                 <label htmlFor={item[name]} className="truncate">
@@ -120,11 +109,7 @@ const FilterComponent = ({
                         <label htmlFor={value} className="pointer-events-none">
                             <input
                                 type="radio"
-                                // name={name}
-                                // value={value}
-                                // id={value}
                                 checked={true}
-                                onChange={() => console.log(value)}
                             />
                             <span className="ml-2 text-[12px] text-[#616161]">{value}</span>
                         </label>

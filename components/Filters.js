@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { community_data, city_data, neighbourhood_data } from "../comm_data";
-import property_data from "../property_data";
+import React, { useState, useEffect, useCallback } from "react";
+import { community_data, city_data, neighbourhood_data } from "../data/comm_data";
+import property_data from "../data/property_data";
 import MultiRangeSlider from "./MultiRangeSlider";
 import FilterComponent from "./FilterComponent";
 import { RxCross2 } from "react-icons/rx";
-import API from "@/utils/axios";
 
-const Filters = ({ data, setData }) => {
+const Filters = ({
+  selection,
+  setSelection,
+  minPrice,
+  maxPrice,
+  setMinPrice,
+  setMaxPrice,
+  fetchData }) => {
 
   // Selected Filter Values
   const [community, setCommunity] = useState();
@@ -15,18 +21,12 @@ const Filters = ({ data, setData }) => {
   const [property, setProperty] = useState({});
   const [filter, setFilter] = useState();
   const [interest, setInterest] = useState();
-  const [minPrice, setMinPrice] = useState();
-  const [maxPrice, setMaxPrice] = useState();
-
 
   // Data States
   const [communityArray, setCommunityArray] = useState(community_data);
   const [cityArray, setCityArray] = useState(city_data);
   const [neighbourhoodArray, setNeighbourhoodArray] = useState(neighbourhood_data);
   const [propertyArray, setPropertyArray] = useState(property_data);
-
-  // Selection
-  const [selection, setSelection] = useState([{ community: "Aragón" }]);
 
   const debounce = (callback, delay) => {
     let timeoutId;
@@ -38,75 +38,38 @@ const Filters = ({ data, setData }) => {
     };
   };
 
-
-  const fetchData = async (reqParams) => {
-    try {
-      const response = await API.get("", {
-        headers: { Authorization: `Bearer ${process.env.token}` },
-        params: reqParams
-      });
-
-      console.log("P " + minPrice)
-      console.log("M " + maxPrice)
-      const newData = [...data, ...response.data.data];
-      const mergedData = Array.from(new Set(newData.map(JSON.stringify)));
-      const uniqueData = mergedData.map(JSON.parse);
-      console.log(newData.length + " - length of returned data array")
-      console.log(uniqueData.length + " - length of merged array with duplicates removed")
-      setData(uniqueData);
-    } catch (err) {
-      // Handle error
-    } finally {
-      // Cleanup and loading state
-    }
-  };
-
+  const debouncedSetMinPrice = debounce(setMinPrice, 300);
+  const debouncedSetMaxPrice = debounce(setMaxPrice, 300);
 
   useEffect(() => {
+    const reqParamsArray = selection.map((currentSelection) => {
+      const reqParams = {};
+      if (currentSelection.neighbourhood) {
+        reqParams.barrio = currentSelection.barrio;
+      }
+      if (currentSelection.community) {
+        reqParams.comunidad = currentSelection.community;
+      }
+      if (currentSelection.city) {
+        reqParams.ciudad = currentSelection.city;
+      }
+      if (currentSelection.subtype_ENG) {
+        reqParams.typerr = currentSelection.id_subid;
+      }
+      reqParams.pmin = minPrice;
+      reqParams.pmax = maxPrice;
 
-    const reqParams = {
-      pmin: minPrice,
-      pmax: maxPrice,
-    };
-    const debouncedFetchData = debounce(fetchData, 300);
+      return reqParams;
+    });
 
-    debouncedFetchData(reqParams);
+    const sortBy = "estimated_yield";
+    fetchData(reqParamsArray, sortBy);
 
-    return () => {
-      clearTimeout(debouncedFetchData);
-    };
-  }, [minPrice, maxPrice]);
-
-
-  useEffect(() => {
-    const currentSelection = selection[selection.length - 1];
-    console.log(currentSelection);
-
-    const reqParams = {};
-
-    currentSelection.neighbourhood ? reqParams.barrio = currentSelection.neighbourhood : reqParams.barrio = 'N/A'
-
-    if (currentSelection.community) {
-      reqParams.comunidad = currentSelection.community;
-    }
-    if (currentSelection.city) {
-      reqParams.ciudad = currentSelection.city;
-    }
-    if (currentSelection.subtype_ENG) {
-      reqParams.typerr = currentSelection.id_subid;
-    }
-    reqParams.sortBy = "estimated_discount";
-
-    console.log("Current Request Object");
-    console.log(reqParams);
-
-    fetchData(reqParams);
-  }, [selection]);
+  }, [selection, minPrice, maxPrice]);
 
 
   const onOptionChange = (e) => {
     const value = e.target.value;
-    console.log(value)
     if (e.target.name === "community") {
       setCommunity(value);
       setCity();
@@ -129,7 +92,6 @@ const Filters = ({ data, setData }) => {
     } else if (e.target.name === "interest") {
       setInterest(e.target.value);
     }
-
   };
 
 
@@ -152,7 +114,6 @@ const Filters = ({ data, setData }) => {
 
   const handleSelection = () => {
     const newSelection = { neighbourhood, community, city, id_subid: property.id_subid, subtype_ENG: property.subtype_ENG };
-
     setSelection(prev => [...prev, newSelection]);
     setCommunity('');
     setCity('');
@@ -164,39 +125,8 @@ const Filters = ({ data, setData }) => {
 
   // Handler Functions End
 
-  // Filter Search Functions
-  function searchByCommunity(searchValue) {
-    const searchResults = communityArray.filter((data) =>
-      data.community.toLowerCase().includes(searchValue.toLowerCase().trim())
-    );
-    return searchResults;
-  }
 
-  function searchByCity(searchValue) {
-    const searchResults = cityArray.filter((data) =>
-      data.city.toLowerCase().startsWith(searchValue.toLowerCase().trim())
-    );
-    return searchResults;
 
-  }
-
-  function searchByNeighbourhood(searchValue) {
-    const searchResults = neighbourhoodArray.filter((data) =>
-      data.neighbourhood.toLowerCase().includes(searchValue.toLowerCase().trim())
-    );
-    return searchResults;
-  }
-
-  function searchByProperty(searchValue) {
-    const searchResults = propertyArray.filter((data) =>
-      data.subtype_ENG.toLowerCase().includes(searchValue.toLowerCase().trim())
-    );
-    return searchResults;
-  }
-  // Filter Search Functions End
-
-  const debouncedSetMinPrice = debounce(setMinPrice, 1000);
-  const debouncedSetMaxPrice = debounce(setMaxPrice, 1000);
 
   return (
     <>
@@ -212,35 +142,35 @@ const Filters = ({ data, setData }) => {
         <FilterComponent name="community"
           value={community}
           filteredArray={communityArray} setFilteredArray={setCommunityArray} onOptionChange={onOptionChange}
-          handleSearch={searchByCommunity} onOptionClear={onOptionClear}
+          onOptionClear={onOptionClear}
         />
         <FilterComponent name="city"
           value={city}
           filteredArray={cityArray} setFilteredArray={setCityArray} onOptionChange={onOptionChange}
-          handleSearch={searchByCity} onOptionClear={onOptionClear}
+          onOptionClear={onOptionClear}
         />
 
         <FilterComponent name="neighbourhood"
           value={neighbourhood}
           filteredArray={neighbourhoodArray} setFilteredArray={setNeighbourhoodArray} onOptionChange={onOptionChange}
-          handleSearch={searchByNeighbourhood} onOptionClear={onOptionClear}
+          onOptionClear={onOptionClear}
         />
 
         <FilterComponent title="property type" name="subtype_ENG"
           value={property.subtype_ENG}
           filteredArray={propertyArray} setFilteredArray={setPropertyArray} onOptionChange={onOptionChange}
-          handleSearch={searchByProperty} onOptionClear={onOptionClear}
+          onOptionClear={onOptionClear}
         />
 
         <button hidden={!community && !city && !neighbourhood && !property.subtype_ENG}
           className="text-[12px] border-[0.5px] border-[#616161] py-2"
           onClick={handleSelection}
-        >SAVE</button>
+        > </button>
 
         {/* Price */}
         <div className='my-4'>
           <h4 className="text-[14px] leading-[16px]">PRICE</h4>
-          <div className="mt-4">
+          <div className="mt-4 flex relative flex-col items-center">
             <MultiRangeSlider
               min={0}
               max={2000000}
@@ -308,7 +238,6 @@ const Filters = ({ data, setData }) => {
                     type="radio"
                     name="filter"
                     checked={true}
-                    onChange={() => console.log(value)}
                   />
                   <span className="ml-2 text-[12px] text-[#616161]">{filter}</span>
                 </label>
@@ -346,7 +275,6 @@ const Filters = ({ data, setData }) => {
                     type="radio"
                     value="Show Field of Interest"
                     checked={true}
-                    onChange={() => console.log(value)}
                   />
                   <span className="ml-2 text-[12px] text-[#616161]">{interest}</span>
                 </label>

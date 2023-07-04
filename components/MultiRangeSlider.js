@@ -51,7 +51,7 @@ const MultiRangeSlider = ({ min, max, onChangeMin, onChangeMax }) => {
     };
 
     return (
-        <div>
+        <div className="">
             <div className="flex justify-between mb-10">
                 <div className="w-[45%]">
                     <input
