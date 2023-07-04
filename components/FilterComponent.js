@@ -61,13 +61,14 @@ const FilterComponent = ({
                     </button>
                 </div>
             </div>
-            <div className={`mt-4 w-full ${filteredItems.length > 0 ? 'h-[150px]' : 'h-[30px]'} `} hidden={value}>
+            <div className={`mt-4 w-full ${filteredItems.length > 0 ? 'h-[150px]' : 'h-[30px]'} `} style={{ height: '150px' }} hidden={value}>
                 <AutoSizer>
                     {({ width, height }) => (
                         filteredArray.length > 0 ?
                             filteredItems &&
                             <form>
                                 <List
+                                    style={{ overflowX: 'auto' }}
                                     width={width}
                                     height={height}
                                     rowHeight={30}
@@ -110,6 +111,7 @@ const FilterComponent = ({
                             <input
                                 type="radio"
                                 checked={true}
+                                onChange={() => { }}
                             />
                             <span className="ml-2 text-[12px] text-[#616161]">{value}</span>
                         </label>
