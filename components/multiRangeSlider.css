@@ -1,13 +1,11 @@
 .container {
-    /* height: 100vh; */
     display: flex;
-    align-items: center;
     justify-content: center;
 }
 
 .slider {
     position: relative;
-    width: 200px;
+    width: 80%;
 }
 
 .slider__track,
@@ -26,7 +24,7 @@
 .slider__track {
     background-color: #dee2e6;
     height: 1px;
-    width: 100%;
+    width: 80%;
     z-index: 1;
 }
 
@@ -62,7 +60,7 @@
     pointer-events: none;
     position: absolute;
     height: 0;
-    width: 200px;
+    width: 80%;
     outline: none;
 }
 

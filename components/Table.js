@@ -1,15 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { TbArrowsDownUp } from 'react-icons/tb';
-import API from "@/utils/axios";
-import property_data from "../property_data";
+import property_data from "../data/property_data";
+import LoadingSpinner from "./LoadingSpinner";
 
+const Table = ({
+  setData,
+  data,
+  currentPage,
+  itemsPerPage,
+  selection,
+  minPrice,
+  maxPrice,
+  isLoading,
+  fetchData
+}) => {
+  const discountCache = useRef([]);
+  const yieldCache = useRef(data);
+  const [buttonActive, setButtonActive] = useState("estimated_yield");
 
-const Table = ({ setData, data, currentPage, itemsPerPage }) => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  // Get the current page of items
   const dataRows = data.slice(startIndex, endIndex);
+
+
 
   let euro = Intl.NumberFormat('en-DE', {
     style: 'currency',
@@ -17,40 +31,67 @@ const Table = ({ setData, data, currentPage, itemsPerPage }) => {
     maximumSignificantDigits: 3,
   });
 
-  const fetchData = async (reqParams) => {
-    try {
-      const response = await API.get('', {
-        headers: { Authorization: `Bearer ${process.env.token}` },
-        params: reqParams
-      });
-
-      const newData = [...data, ...response.data.data];
-      const mergedData = Array.from(new Set(newData.map(JSON.stringify)));
-      const uniqueData = mergedData.map(JSON.parse);
-
-      setData(uniqueData);
-    } catch (err) {
-      // Handle error
-    } finally {
-      // Cleanup and loading state
-    }
-  };
-
-  const sortData = (sortBy) => {
-    const reqParams = {
-      sortBy: sortBy
-    };
-    fetchData(reqParams);
-  };
 
   useEffect(() => {
-    fetchData({});
-  }, []);
+    discountCache.current = [];
+    yieldCache.current = [];
+    setButtonActive("estimated_yield")
+  }, [selection])
 
+
+  const sortData = async (sortBy) => {
+
+    if (sortBy === 'estimated_yield' && yieldCache.current.length !== 0) {
+      setData(yieldCache.current);
+      return;
+    }
+
+    if (sortBy === 'estimated_discount' && discountCache.current.length !== 0) {
+      setData(discountCache.current);
+      return;
+    }
+
+    const reqParamsArray = selection.map((currentSelection) => {
+      const reqParams = {};
+      if (currentSelection.neighbourhood) {
+        reqParams.barrio = currentSelection.barrio;
+      }
+      if (currentSelection.community) {
+        reqParams.comunidad = currentSelection.community;
+      }
+      if (currentSelection.city) {
+        reqParams.ciudad = currentSelection.city;
+      }
+      if (currentSelection.subtype_ENG) {
+        reqParams.typerr = currentSelection.id_subid;
+      }
+      reqParams.pmin = minPrice;
+      reqParams.pmax = maxPrice;
+      reqParams.select_cols = sortBy;
+
+      return reqParams;
+    });
+
+    const sortedData = await fetchData(reqParamsArray, sortBy);
+
+    if (reqParamsArray[0].select_cols === 'estimated_yield') {
+      yieldCache.current = sortedData;
+    } else {
+      discountCache.current = sortedData;
+    }
+
+  };
 
   const formatProperty = (id_subid) => {
     return property_data.find((item) => item.id_subid == id_subid)?.type_SPA;
   };
+
+
+  if (isLoading) {
+    return <div className="flex justify-center">
+      <LoadingSpinner />
+    </div>
+  }
 
   return (
     <div className="overflow-x-auto">
@@ -60,12 +101,24 @@ const Table = ({ setData, data, currentPage, itemsPerPage }) => {
             <th className="font-normal">LOCATION</th>
             <th className="font-normal">PRICE</th>
             <th className="font-normal">
-              <button onClick={() => sortData("estimated_yield")} className="flex items-center gap-2">
+              <button
+                disabled={buttonActive === 'estimated_yield'}
+                onClick={() => {
+                  sortData("estimated_yield")
+                  setButtonActive("estimated_yield")
+                }} className={`flex items-center gap-2 ${buttonActive === 'estimated_yield' && 'text-[#000] font-bold'}`}>
                 <h6>YIELD</h6> <TbArrowsDownUp />
               </button>
             </th>
             <th className="font-normal">
-              <button onClick={() => sortData("estimated_discount")} className="flex items-center gap-2">
+              <button
+                disabled={buttonActive === 'estimated_discount'}
+                onClick={() => {
+                  sortData("estimated_discount")
+                  setButtonActive("estimated_discount")
+                }}
+                className={`flex items-center gap-2 ${buttonActive === 'estimated_discount' && 'text-[#000] font-bold'}`}
+              >
                 <h6>DISCOUNT</h6> <TbArrowsDownUp />
               </button>
             </th>

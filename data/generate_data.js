@@ -36081,5 +36081,4 @@ const new_data = data.map((item) => {
 // Store the modified data into a new file
 fs.writeFile("data.js", JSON.stringify(new_data), (err) => {
   if (err) throw err;
-  console.log("New data saved!");
 });
