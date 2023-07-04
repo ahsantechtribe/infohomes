@@ -15,9 +15,9 @@ const Filters = ({
   fetchData }) => {
 
   // Selected Filter Values
-  const [community, setCommunity] = useState();
-  const [city, setCity] = useState();
-  const [neighbourhood, setNeighbourhood] = useState();
+  const [community, setCommunity] = useState('');
+  const [city, setCity] = useState('');
+  const [neighbourhood, setNeighbourhood] = useState('');
   const [property, setProperty] = useState({});
   const [filter, setFilter] = useState();
   const [interest, setInterest] = useState();
@@ -126,8 +126,6 @@ const Filters = ({
   // Handler Functions End
 
 
-
-
   return (
     <>
       <div>
@@ -165,7 +163,7 @@ const Filters = ({
         <button hidden={!community && !city && !neighbourhood && !property.subtype_ENG}
           className="text-[12px] border-[0.5px] border-[#616161] py-2"
           onClick={handleSelection}
-        > </button>
+        >SAVE</button>
 
         {/* Price */}
         <div className='my-4'>
@@ -238,6 +236,7 @@ const Filters = ({
                     type="radio"
                     name="filter"
                     checked={true}
+                    onChange={() => { }}
                   />
                   <span className="ml-2 text-[12px] text-[#616161]">{filter}</span>
                 </label>
@@ -275,6 +274,7 @@ const Filters = ({
                     type="radio"
                     value="Show Field of Interest"
                     checked={true}
+                    onChange={() => { }}
                   />
                   <span className="ml-2 text-[12px] text-[#616161]">{interest}</span>
                 </label>

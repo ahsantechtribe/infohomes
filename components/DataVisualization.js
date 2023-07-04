@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Table from "./Table";
 import Filters from "./Filters";
 import API from "@/utils/axios";
@@ -8,13 +8,28 @@ import API from "@/utils/axios";
 const DataVisualization = () => {
   const [descriptionExpand, setDescriptionExpand] = useState(false);
   const [filterExpand, setFilterExpand] = useState(false);
-  const [isLoading, setIsLoading = { setIsLoading }] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const [selection, setSelection] = useState([{ community: "Aragón" }]);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(2000000);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
+
+
+  const filteredItems = useMemo(() => {
+    return data.filter(item => {
+      return (item.barrio + item.ciudad).toLowerCase().includes(searchQuery.toLowerCase().trim())
+    })
+  }, [data, searchQuery]);
+
+  const handleInputChange = (e) => {
+    setCurrentPage(1);
+    const inputValue = e.target.value;
+    setSearchQuery(inputValue);
+  };
+
 
   // Page Navigation Functions
   const goToPreviousPage = () => {
@@ -24,11 +39,10 @@ const DataVisualization = () => {
   };
 
   const goToNextPage = () => {
-    if (currentPage < Math.ceil(data.length / itemsPerPage)) {
+    if (currentPage < Math.ceil(filteredItems.length / itemsPerPage)) {
       setCurrentPage((prev) => prev + 1);
     }
   };
-
 
   const fetchData = async (reqParamsArray, sortBy) => {
     setIsLoading(true);
@@ -46,17 +60,11 @@ const DataVisualization = () => {
       const sortedData = sortBy === 'estimated_yield'
         ? newData.sort((a, b) => b.estimated_yield - a.estimated_yield)
         : newData.sort((a, b) => b.estimated_discount - a.estimated_discount);
-
-      console.log("giiiii")
       setData(sortedData);
-      console.log("SD    ", sortedData)
-      console.log("SD    ", sortedData)
-      console.log("SD    ", sortedData)
-      console.log("SD    ", sortedData)
       return sortedData;
     } catch (err) {
       // Handle error
-      console.log("err , ", err)
+      console.log(err)
     } finally {
       setIsLoading(false);
     }
@@ -79,6 +87,8 @@ const DataVisualization = () => {
                 placeholder="Search"
                 name="search"
                 id="search"
+                // value={searchQuery}
+                onChange={handleInputChange}
                 className="rounded-full border-[1px] border-[#616161] text-[12px] leading-[18px] pl-8 p-2 w-[420px]"
               />
               <Image
@@ -90,7 +100,7 @@ const DataVisualization = () => {
               />
             </div>
             <div className="flex items-center">
-              <p className="text-[12px] leading-[18px] mr-3">Page {currentPage} Of {Math.ceil(data.length / 8)}</p>
+              <p className="text-[12px] leading-[18px] mr-3">Page {currentPage} Of {Math.ceil(filteredItems.length / 8)}</p>
               <button onClick={goToPreviousPage} className={`mr-3  ${currentPage === 1 ? 'text-[#D3D3D3]' : 'text-[#0E0B13]'}`}>
                 <svg width={6} height={10} viewBox="0 0 6 10" stroke={currentPage === 1 ? '#D3D3D3' : '#0E0B13'} xmlns="http://www.w3.org/2000/svg">
                   <path d="M0.00507501 4.92752C0.0229935 4.81667 0.0795285 4.71363 0.166758 4.63316L4.94588 0.189119L4.94602 0.189119C5.05214 0.076901 5.20535 0.00870373 5.36966 0.000644217C5.53385 -0.00753928 5.69456 0.0452819 5.81387 0.14634C5.93318 0.247521 6.00055 0.388133 6 0.534939C5.99944 0.681751 5.93096 0.821992 5.81095 0.9223L1.42369 4.9997L5.81095 9.07711L5.81095 9.07723C5.93096 9.17767 5.99944 9.31778 6 9.46459C6.00055 9.61153 5.93319 9.75202 5.81387 9.85319C5.69455 9.95425 5.53384 10.0071 5.36967 9.99901C5.20534 9.99083 5.05213 9.92263 4.94602 9.81041L0.166897 5.36638L0.166758 5.36638C0.0410502 5.2497 -0.0185361 5.08825 0.00507501 4.92756L0.00507501 4.92752Z" fill="#D3D3D3" />
@@ -106,9 +116,9 @@ const DataVisualization = () => {
           </div>
           {
             <div className="mt-5">
-              <Table data={data} setData={setData} currentPage={currentPage}
-                itemsPerPage={itemsPerPage} selection={selection} setSelection={selection}
-                minPrice={minPrice} maxPrice={maxPrice} isLoading={isLoading} setIsLoading={setIsLoading}
+              <Table data={filteredItems} setData={setData} currentPage={currentPage}
+                itemsPerPage={itemsPerPage} selection={selection}
+                minPrice={minPrice} maxPrice={maxPrice} isLoading={isLoading}
                 fetchData={fetchData}
               />
             </div>
@@ -157,9 +167,9 @@ const DataVisualization = () => {
               )}
             </div>
             <div hidden={!filterExpand}>
-              <Filters data={data} setData={setData} selection={selection}
+              <Filters selection={selection}
                 setSelection={setSelection} minPrice={minPrice} maxPrice={maxPrice}
-                setMinPrice={setMinPrice} setMaxPrice={setMaxPrice} setIsLoading={setIsLoading}
+                setMinPrice={setMinPrice} setMaxPrice={setMaxPrice}
                 fetchData={fetchData}
               />
             </div>
